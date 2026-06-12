@@ -11,13 +11,20 @@ import type { ReactNode } from "react";
 import { auth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 
-const NAV = [
+type NavItem = {
+  to: "/admin" | "/admin/agendamentos" | "/admin/clientes" | "/admin/profissionais" | "/admin/servicos";
+  label: string;
+  icon: typeof LayoutDashboard;
+  exact?: boolean;
+};
+
+const NAV: NavItem[] = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { to: "/admin/agendamentos", label: "Agendamentos", icon: CalendarDays },
   { to: "/admin/clientes", label: "Clientes", icon: Users },
   { to: "/admin/profissionais", label: "Profissionais", icon: UserCog },
   { to: "/admin/servicos", label: "Serviços", icon: Scissors },
-] as const;
+];
 
 export function AdminShell({ children }: { children: ReactNode }) {
   const router = useRouter();
