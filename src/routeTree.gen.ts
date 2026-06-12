@@ -14,6 +14,10 @@ import { Route as AgendarRouteImport } from './routes/agendar'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminServicosRouteImport } from './routes/admin.servicos'
+import { Route as AdminProfissionaisRouteImport } from './routes/admin.profissionais'
+import { Route as AdminClientesRouteImport } from './routes/admin.clientes'
+import { Route as AdminAgendamentosRouteImport } from './routes/admin.agendamentos'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -40,18 +44,46 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminServicosRoute = AdminServicosRouteImport.update({
+  id: '/servicos',
+  path: '/servicos',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminProfissionaisRoute = AdminProfissionaisRouteImport.update({
+  id: '/profissionais',
+  path: '/profissionais',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminClientesRoute = AdminClientesRouteImport.update({
+  id: '/clientes',
+  path: '/clientes',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAgendamentosRoute = AdminAgendamentosRouteImport.update({
+  id: '/agendamentos',
+  path: '/agendamentos',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/agendar': typeof AgendarRoute
   '/login': typeof LoginRoute
+  '/admin/agendamentos': typeof AdminAgendamentosRoute
+  '/admin/clientes': typeof AdminClientesRoute
+  '/admin/profissionais': typeof AdminProfissionaisRoute
+  '/admin/servicos': typeof AdminServicosRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/agendar': typeof AgendarRoute
   '/login': typeof LoginRoute
+  '/admin/agendamentos': typeof AdminAgendamentosRoute
+  '/admin/clientes': typeof AdminClientesRoute
+  '/admin/profissionais': typeof AdminProfissionaisRoute
+  '/admin/servicos': typeof AdminServicosRoute
   '/admin': typeof AdminIndexRoute
 }
 export interface FileRoutesById {
@@ -60,14 +92,45 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteWithChildren
   '/agendar': typeof AgendarRoute
   '/login': typeof LoginRoute
+  '/admin/agendamentos': typeof AdminAgendamentosRoute
+  '/admin/clientes': typeof AdminClientesRoute
+  '/admin/profissionais': typeof AdminProfissionaisRoute
+  '/admin/servicos': typeof AdminServicosRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/agendar' | '/login' | '/admin/'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/agendar'
+    | '/login'
+    | '/admin/agendamentos'
+    | '/admin/clientes'
+    | '/admin/profissionais'
+    | '/admin/servicos'
+    | '/admin/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/agendar' | '/login' | '/admin'
-  id: '__root__' | '/' | '/admin' | '/agendar' | '/login' | '/admin/'
+  to:
+    | '/'
+    | '/agendar'
+    | '/login'
+    | '/admin/agendamentos'
+    | '/admin/clientes'
+    | '/admin/profissionais'
+    | '/admin/servicos'
+    | '/admin'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/agendar'
+    | '/login'
+    | '/admin/agendamentos'
+    | '/admin/clientes'
+    | '/admin/profissionais'
+    | '/admin/servicos'
+    | '/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -114,14 +177,50 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/servicos': {
+      id: '/admin/servicos'
+      path: '/servicos'
+      fullPath: '/admin/servicos'
+      preLoaderRoute: typeof AdminServicosRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/profissionais': {
+      id: '/admin/profissionais'
+      path: '/profissionais'
+      fullPath: '/admin/profissionais'
+      preLoaderRoute: typeof AdminProfissionaisRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/clientes': {
+      id: '/admin/clientes'
+      path: '/clientes'
+      fullPath: '/admin/clientes'
+      preLoaderRoute: typeof AdminClientesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/agendamentos': {
+      id: '/admin/agendamentos'
+      path: '/agendamentos'
+      fullPath: '/admin/agendamentos'
+      preLoaderRoute: typeof AdminAgendamentosRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
 interface AdminRouteChildren {
+  AdminAgendamentosRoute: typeof AdminAgendamentosRoute
+  AdminClientesRoute: typeof AdminClientesRoute
+  AdminProfissionaisRoute: typeof AdminProfissionaisRoute
+  AdminServicosRoute: typeof AdminServicosRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminAgendamentosRoute: AdminAgendamentosRoute,
+  AdminClientesRoute: AdminClientesRoute,
+  AdminProfissionaisRoute: AdminProfissionaisRoute,
+  AdminServicosRoute: AdminServicosRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 
