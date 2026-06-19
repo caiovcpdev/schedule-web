@@ -40,6 +40,19 @@ export interface Agendamento {
   servico?: Servico;
 }
 
+export interface AgendamentoListagem {
+  id: string;
+  clienteNome: string;
+  profissionalNome: string;
+  servicoNome: string;
+  servicoPreco: number;
+  dataHoraInicio: string;
+  dataHoraFim: string;
+  status: string;
+  observacao?: string;
+  createdAt: string;
+}
+
 export interface AgendamentoRequest {
   clienteId: string;
   profissionalId: string;

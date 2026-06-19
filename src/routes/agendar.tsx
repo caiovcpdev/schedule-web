@@ -39,22 +39,42 @@ function AgendarPage() {
   const [dataHora, setDataHora] = useState("");
   const [observacao, setObservacao] = useState("");
 
-  const servicos = useQuery({ queryKey: ["servicos"], queryFn: servicosApi.listar });
+  const servicos = useQuery({ 
+    queryKey: ["servicos"],
+    queryFn: servicosApi.listar });
+
   const profissionais = useQuery({
-    queryKey: ["profissionais"],
-    queryFn: profissionaisApi.listar,
+    queryKey: ["profissionais", servicoId],
+    queryFn: () => servicosApi.obterProfissionalPorServico(servicoId),
+    enabled: !!servicoId
   });
+
+  const onChangeServico = (value: string) => {
+    setServicoId(value);
+    setProfissionalId("") //limpar profissional ao trocar de serviço
+  }
+
 
   const criar = useMutation({
     mutationFn: async () => {
-      const cliente = await clientesApi.criar({ nome, email, telefone });
+
+        let cliente = await clientesApi.obterPorEmail(email)
+
+        if(!cliente)
+          cliente = await clientesApi.criar({ nome, email, telefone });
+        
+        console.log(new Date(dataHora).toISOString);
+        console.log(new Date(dataHora));
+
       return agendamentosApi.criar({
         clienteId: cliente.id,
         profissionalId,
         servicoId,
-        dataHoraInicio: new Date(dataHora).toISOString(),
+        dataHoraInicio: dataHora,
         observacao: observacao || undefined,
+        // dataHoraInicio: new Date(dataHora).toISOString(),
       });
+
     },
     onSuccess: () => {
       toast.success("Agendamento solicitado!", {
@@ -67,6 +87,7 @@ function AgendarPage() {
 
   const disabled =
     !nome || !email || !telefone || !servicoId || !profissionalId || !dataHora;
+
 
   return (
     <div className="min-h-screen bg-background">
@@ -98,39 +119,80 @@ function AgendarPage() {
 
           <div className="grid gap-4 md:grid-cols-2">
             <Field label="Serviço">
-              <Select value={servicoId} onValueChange={setServicoId}>
+              <Select value={servicoId} onValueChange={onChangeServico}>
                 <SelectTrigger><SelectValue placeholder="Selecione" /></SelectTrigger>
-                <SelectContent>
+                {/* <SelectContent>
                   {servicos.data?.map((s) => (
                     <SelectItem key={s.id} value={s.id}>
                       {s.nome} — {s.duracaoEmMinutos}min
                     </SelectItem>
                   ))}
+                </SelectContent> */}
+                <SelectContent>
+                  {servicos.data?.length ? (
+                    servicos.data.map((s) =>(
+                      <SelectItem key={s.id} value= {String(s.id)}>
+                          {s.nome} — {s.duracaoEmMinutos}min
+                      </SelectItem>
+                    ))
+                  ):(
+                    <div className="px-2 py-1.5 text-sm text-muted-foreground">
+                      Nenhum servico disponível
+                    </div>
+                  )}
                 </SelectContent>
               </Select>
             </Field>
             <Field label="Profissional">
-              <Select value={profissionalId} onValueChange={setProfissionalId}>
+              <Select value={profissionalId} onValueChange={setProfissionalId} disabled={!servicoId || profissionais.isLoading}>
                 <SelectTrigger><SelectValue placeholder="Selecione" /></SelectTrigger>
-                <SelectContent>
-                  {profissionais.data?.map((p) => (
-                    <SelectItem key={p.id} value={p.id}>
-                      {p.nome} — {p.especialidade}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
+                
+                 <SelectContent>
+                  {profissionais.data?.length ? (
+                    profissionais.data.map((p) => (
+                      <SelectItem key={p.id} value={String(p.id)}>
+                        {p.nome}
+                      </SelectItem>
+                    ))
+                  ) : (
+                    <div className="px-2 py-1.5 text-sm text-muted-foreground">
+                      Nenhum profissional disponível
+                    </div>
+                  )}
+                </SelectContent>     
               </Select>
+            </Field>
+            <Field label="Horário do agendamento">
+              <Input
+                type="datetime-local"
+                value={dataHora}
+                onChange={(e) => setDataHora(e.target.value)}
+                required
+              />
+
+              {/* {dataHora && (
+                <p className="text-sm text-muted-foreground mt-1">
+                  {new Date(dataHora).toLocaleString("pt-BR")}
+                </p>
+              )} */}
             </Field>
           </div>
 
-          <Field label="Data e hora">
+          {/* <Field label="Data e hora">
             <Input
               type="datetime-local"
               value={dataHora}
               onChange={(e) => setDataHora(e.target.value)}
               required
             />
-          </Field>
+
+            {/* {dataHora && (
+              <p className="text-sm text-muted-foreground mt-1">
+                {new Date(dataHora).toLocaleString("pt-BR")}
+              </p>
+            )} */}
+          {/* </Field>  */}
+          
 
           <Field label="Observação (opcional)">
             <Textarea value={observacao} onChange={(e) => setObservacao(e.target.value)} />

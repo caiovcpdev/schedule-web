@@ -21,6 +21,8 @@ function AgendamentosPage() {
     queryFn: agendamentosApi.listar,
   });
 
+  console.log(data);
+
   const invalidate = () => qc.invalidateQueries({ queryKey: ["agendamentos"] });
 
   const confirmar = useMutation({
@@ -58,11 +60,29 @@ function AgendamentosPage() {
             )}
             {data?.map((a) => (
               <TableRow key={a.id}>
-                <TableCell>{new Date(a.dataHoraInicio).toLocaleString("pt-BR")}</TableCell>
-                <TableCell>{a.cliente?.nome ?? a.clienteId.slice(0, 8)}</TableCell>
-                <TableCell>{a.profissional?.nome ?? a.profissionalId.slice(0, 8)}</TableCell>
-                <TableCell>{a.servico?.nome ?? a.servicoId.slice(0, 8)}</TableCell>
-                <TableCell><Badge variant="secondary">{a.status ?? "Pendente"}</Badge></TableCell>
+                
+                <TableCell>
+                  {new Date(a.dataHoraInicio).toLocaleDateString("pt-BR", {hour: "2-digit", minute: "2-digit"})}
+                </TableCell>
+                
+                <TableCell>
+                  {a.clienteNome ?? '-'}
+                </TableCell>
+                
+                <TableCell>
+                  {a.profissionalNome ?? '-' }
+                </TableCell>
+                
+                <TableCell>
+                  {a.servicoNome ?? '-'}
+                </TableCell>
+                
+                <TableCell>
+                    <Badge variant="secondary">
+                      {a.status ?? "Pendente"}
+                    </Badge>
+                </TableCell>
+                
                 <TableCell className="text-right space-x-2">
                   <Button size="sm" variant="outline" onClick={() => confirmar.mutate(a.id)}>
                     <Check className="h-4 w-4" />

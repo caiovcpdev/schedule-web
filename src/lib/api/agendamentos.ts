@@ -1,8 +1,8 @@
 import { http } from "./http";
-import type { Agendamento, AgendamentoRequest } from "../types";
+import type { Agendamento, AgendamentoListagem, AgendamentoRequest } from "../types";
 
 export const agendamentosApi = {
-  listar: () => http.get<Agendamento[]>("/api/Agendamentos").then((r) => r.data),
+  listar: () => http.get<AgendamentoListagem[]>("/api/Agendamentos").then((r) => r.data),
   obter: (id: string) =>
     http.get<Agendamento>(`/api/Agendamentos/${id}`).then((r) => r.data),
   criar: (dto: AgendamentoRequest) =>
