@@ -48,7 +48,7 @@ function AgendamentosPage() {
               <TableHead>Profissional</TableHead>
               <TableHead>Serviço</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead className="text-right">Ações</TableHead>
+              <TableHead className="text-center">Ações</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -83,14 +83,36 @@ function AgendamentosPage() {
                     </Badge>
                 </TableCell>
                 
-                <TableCell className="text-right space-x-2">
+                <TableCell className="space-x-2">
+                  {a.status === "Pendente" && (
+                    <>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => confirmar.mutate(a.id)}
+                      >
+                        <Check className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => cancelar.mutate(a.id)}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </>
+                  )}
+                </TableCell>
+
+
+                {/* <TableCell className="text-right space-x-2">
                   <Button size="sm" variant="outline" onClick={() => confirmar.mutate(a.id)}>
                     <Check className="h-4 w-4" />
                   </Button>
                   <Button size="sm" variant="outline" onClick={() => cancelar.mutate(a.id)}>
                     <X className="h-4 w-4" />
                   </Button>
-                </TableCell>
+                </TableCell> */}
               </TableRow>
             ))}
           </TableBody>

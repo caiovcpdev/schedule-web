@@ -8,7 +8,7 @@ import {
   LogOut,
 } from "lucide-react";
 import type { ReactNode } from "react";
-import { auth } from "@/lib/auth";
+import { authApi } from "@/lib/api/authApi";
 import { Button } from "@/components/ui/button";
 
 type NavItem = {
@@ -56,7 +56,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
             variant="ghost"
             className="w-full justify-start text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-foreground"
             onClick={() => {
-              auth.logout();
+              // authApi.logout();
               router.navigate({ to: "/login" });
             }}
           >

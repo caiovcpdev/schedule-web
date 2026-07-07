@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as MudasenhaRouteImport } from './routes/mudasenha'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AgendarRouteImport } from './routes/agendar'
 import { Route as AdminRouteImport } from './routes/admin'
@@ -19,6 +20,11 @@ import { Route as AdminProfissionaisRouteImport } from './routes/admin.profissio
 import { Route as AdminClientesRouteImport } from './routes/admin.clientes'
 import { Route as AdminAgendamentosRouteImport } from './routes/admin.agendamentos'
 
+const MudasenhaRoute = MudasenhaRouteImport.update({
+  id: '/mudasenha',
+  path: '/mudasenha',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -70,6 +76,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteWithChildren
   '/agendar': typeof AgendarRoute
   '/login': typeof LoginRoute
+  '/mudasenha': typeof MudasenhaRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/clientes': typeof AdminClientesRoute
   '/admin/profissionais': typeof AdminProfissionaisRoute
@@ -80,6 +87,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/agendar': typeof AgendarRoute
   '/login': typeof LoginRoute
+  '/mudasenha': typeof MudasenhaRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/clientes': typeof AdminClientesRoute
   '/admin/profissionais': typeof AdminProfissionaisRoute
@@ -92,6 +100,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteWithChildren
   '/agendar': typeof AgendarRoute
   '/login': typeof LoginRoute
+  '/mudasenha': typeof MudasenhaRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/clientes': typeof AdminClientesRoute
   '/admin/profissionais': typeof AdminProfissionaisRoute
@@ -105,6 +114,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/agendar'
     | '/login'
+    | '/mudasenha'
     | '/admin/agendamentos'
     | '/admin/clientes'
     | '/admin/profissionais'
@@ -115,6 +125,7 @@ export interface FileRouteTypes {
     | '/'
     | '/agendar'
     | '/login'
+    | '/mudasenha'
     | '/admin/agendamentos'
     | '/admin/clientes'
     | '/admin/profissionais'
@@ -126,6 +137,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/agendar'
     | '/login'
+    | '/mudasenha'
     | '/admin/agendamentos'
     | '/admin/clientes'
     | '/admin/profissionais'
@@ -138,10 +150,18 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRouteWithChildren
   AgendarRoute: typeof AgendarRoute
   LoginRoute: typeof LoginRoute
+  MudasenhaRoute: typeof MudasenhaRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/mudasenha': {
+      id: '/mudasenha'
+      path: '/mudasenha'
+      fullPath: '/mudasenha'
+      preLoaderRoute: typeof MudasenhaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -231,6 +251,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRouteWithChildren,
   AgendarRoute: AgendarRoute,
   LoginRoute: LoginRoute,
+  MudasenhaRoute: MudasenhaRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
